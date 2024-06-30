@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+  my-network:
+    driver: bridge
+
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/userdb
+      - REDIS_URL=redis://redis:6379
+      - REDIS_EXPIRE=3600
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - my-network
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - my-network
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    networks:
+      - my-network
+
+volumes:
+  mongo-data:
