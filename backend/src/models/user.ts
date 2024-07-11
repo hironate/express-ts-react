@@ -15,3 +15,18 @@ const userSchema = new Schema<IUser>({
 });
 
 export const User = model<IUser>('User', userSchema);
+
+export type UserType = {
+  _id: string;
+  name: string;
+  email: string;
+  bio: string;
+  profilePicture: string;
+};
+
+export type CreateUserType = {
+  name: string;
+  email: string;
+  bio: string;
+  profilePicture: string;
+};
